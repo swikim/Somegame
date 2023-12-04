@@ -6,11 +6,17 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     public GameObject[] weapons;
+    [SerializeField]
+    private Transform ShootTransform;
 
     [SerializeField]
     private float moveSpeed = 10f;
 
     private float minY = -7;
+    
+    [SerializeField]
+    private GameObject weapon;
+
 
     //float xMove,yMove;
 
@@ -23,6 +29,9 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+    float scaleX = transform.localScale.x;
+    float scaleY = transform.localScale.y;
+
     //     xMove = 0; 
     //     yMove = 0; 
 
@@ -34,14 +43,23 @@ public class Player : MonoBehaviour
         float verticalInput = Input.GetAxisRaw("Vertical");
         Vector3 moveTo=new Vector3(horizontalInput,verticalInput,0f);
         transform.position += moveTo * moveSpeed * Time.deltaTime;
+         float playerMove = Input.GetAxis("Horizontal") * moveSpeed *Time.deltaTime;
+        if(Input.GetKeyDown(KeyCode.RightArrow)){
+            transform.localScale = new Vector3(1,1,1);
+        }
+        if(Input.GetKeyDown(KeyCode.LeftArrow)){
+            transform.localScale = new Vector3(-1,1,1);
 
+        }
         if(transform.position.y < minY){
             Destroy(gameObject);
         }
+        Shoot();
     }
     void Shoot(){
-        if(Input.GetKey("X")){
-            Debug.Log("six");
+        if(Input.GetKeyDown("x")){
+            Instantiate(weapons[0],ShootTransform.position,Quaternion.identity);
+
         }
     }
 }
