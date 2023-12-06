@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public bool xflip;
+
     [SerializeField]
     public GameObject[] weapons;
     [SerializeField]
@@ -16,14 +18,14 @@ public class Player : MonoBehaviour
     
     [SerializeField]
     private GameObject weapon;
-
+    private SpriteRenderer playerSpriteRender;
 
     //float xMove,yMove;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerSpriteRender = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -44,13 +46,15 @@ public class Player : MonoBehaviour
         Vector3 moveTo=new Vector3(horizontalInput,verticalInput,0f);
         transform.position += moveTo * moveSpeed * Time.deltaTime;
          float playerMove = Input.GetAxis("Horizontal") * moveSpeed *Time.deltaTime;
-        if(Input.GetKeyDown(KeyCode.RightArrow)){
-            transform.localScale = new Vector3(1,1,1);
-        }
-        if(Input.GetKeyDown(KeyCode.LeftArrow)){
-            transform.localScale = new Vector3(-1,1,1);
+        // if(Input.GetKeyDown(KeyCode.RightArrow)){
+        //     transform.localScale = new Vector3(1,1,1);
+        // }
+        // if(Input.GetKeyDown(KeyCode.LeftArrow)){
+        //     transform.localScale = new Vector3(-1,1,1);
 
-        }
+        // }
+        
+        RightLeft();
         if(transform.position.y < minY){
             Destroy(gameObject);
         }
@@ -59,7 +63,16 @@ public class Player : MonoBehaviour
     void Shoot(){
         if(Input.GetKeyDown("x")){
             Instantiate(weapons[0],ShootTransform.position,Quaternion.identity);
-
+            
+        }
+    }
+    public void RightLeft(){
+        if(Input.GetKey(KeyCode.RightArrow)){
+            playerSpriteRender.flipX =false;
+            xflip = false;
+        }else if(Input.GetKey(KeyCode.LeftArrow)){
+            playerSpriteRender.flipX = true;
+            xflip = true;
         }
     }
 }
